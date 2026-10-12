@@ -1,0 +1,17 @@
+{
+  "name": "cooking-recipes-for-disaster",
+  "version": "1.0.0",
+  "description": "Filipino recipe website with API backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "next": "^16.4.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}
