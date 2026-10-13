@@ -1,8 +1,5 @@
 ﻿# IPT-FINALPROJECT-CRFD
 
-=======
-# IPT-FINALPROJECT-CRFD
-
 **Project Title:** Cooking Recipes (For Disaster) — CRFD  
 **Author:** Jessieca Mae D. Milan  
 **Website Category:** Recipe Website / Entertainment
