@@ -1,6 +1,53 @@
 let ingredientCounter = 0;
 let stepCounter = 0;
 
+const requiredFields = [
+    { id: 'title', message: 'Title is required' },
+    { id: 'category', message: 'Please select a category' },
+    { id: 'protein', message: 'Please select a protein' },
+    { id: 'description', message: 'Description is required' },
+    { id: 'servings', message: 'Servings is required' },
+    { id: 'prepDuration', message: 'Prep duration is required' },
+    { id: 'cookDuration', message: 'Cook duration is required' },
+    { id: 'difficulty', message: 'Please select a difficulty' }
+];
+
+function showFieldError(fieldId, message) {
+    const errorEl = document.getElementById(`${fieldId}-error`);
+    const inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = message;
+    }
+    if (inputEl) {
+        inputEl.style.borderColor = '#e74c3c';
+    }
+}
+
+function clearFieldError(fieldId) {
+    const errorEl = document.getElementById(`${fieldId}-error`);
+    const inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = '';
+    }
+    if (inputEl) {
+        inputEl.style.borderColor = '';
+    }
+}
+
+function validateRequiredFields() {
+    let isValid = true;
+    requiredFields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (input && !input.value.trim()) {
+            showFieldError(field.id, field.message);
+            isValid = false;
+        } else if (input) {
+            clearFieldError(field.id);
+        }
+    });
+    return isValid;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     addIngredientRow();
     addStepRow();
@@ -8,6 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('add-ingredient').addEventListener('click', addIngredientRow);
     document.getElementById('add-step').addEventListener('click', addStepRow);
     document.getElementById('recipe-form').addEventListener('submit', handleSubmit);
+
+    requiredFields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (input) {
+            input.addEventListener('input', () => clearFieldError(field.id));
+            input.addEventListener('change', () => clearFieldError(field.id));
+        }
+    });
 });
 
 function addIngredientRow(data = {}) {
@@ -34,7 +89,7 @@ function addStepRow(data = {}) {
     row.dataset.id = stepCounter;
     row.innerHTML = `
         <textarea name="step-text" placeholder="Step ${stepCounter}" rows="2" required>${escapeHtml(data.text || '')}</textarea>
-        <button type="button" class="btn-remove" aria-label="Remove step">Remove</button>
+        <button type="button" class="btn-remove" aria-label="Remove step"> <img src="logos/remove.png" alt="Remove"> Remove</button>
     `;
     row.querySelector('.btn-remove').addEventListener('click', () => row.remove());
     container.appendChild(row);
@@ -57,6 +112,13 @@ async function handleSubmit(event) {
     messageDiv.className = 'form-message';
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
+
+    if (!validateRequiredFields()) {
+        showMessage('Please fill in all required fields.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Recipe';
+        return;
+    }
 
     const ingredients = [];
     document.querySelectorAll('#ingredients-list .dynamic-row').forEach(row => {
@@ -90,8 +152,11 @@ async function handleSubmit(event) {
         return;
     }
 
+    const authorName = form['author-name'].value.trim() || 'Anonymous';
+
     const formData = {
         name: form.title.value.trim(),
+        authorName: authorName,
         mealType: form.category.value,
         proteinType: form.protein.value,
         description: form.description.value.trim(),
@@ -114,7 +179,7 @@ async function handleSubmit(event) {
         const result = await response.json();
 
         if (response.ok && result.ok) {
-            showMessage('Recipe submitted successfully! It will be reviewed by an admin.', 'success');
+            showMessage('Recipe submitted successfully! Thank you for sharing your recipe. It will be viewed and reviewed by our team.', 'success');
             form.reset();
             document.getElementById('ingredients-list').innerHTML = '';
             document.getElementById('steps-list').innerHTML = '';
@@ -123,11 +188,11 @@ async function handleSubmit(event) {
             addIngredientRow();
             addStepRow();
         } else {
-            showMessage(result.error || 'Failed to submit recipe. Please try again.', 'error');
+            showMessage(result.error || "That didn't work. Please try again.", 'error');
         }
     } catch (err) {
         console.error(err);
-        showMessage('Network error. Please try again.', 'error');
+        showMessage('Uh oh. Network error. Please try again.', 'error');
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Submit Recipe';

@@ -51,9 +51,9 @@ function renderIngredients(ingredients) {
 function renderSteps(steps) {
     if (!steps || steps.length === 0) return '<p>No steps</p>';
     return `
-        <ol class="steps-list">
+        <ul class="steps-list">
             ${steps.map(step => `<li>${escapeHtml(step)}</li>`).join('')}
-        </ol>
+        </ul>
     `;
 }
 
@@ -62,7 +62,7 @@ function createSubmissionCard(submission) {
     card.className = 'submission-card';
     card.dataset.id = submission.id;
 
-    const submitterName = submission.submitterName || 'Anonymous';
+    const submitterName = submission.authorName || 'Anonymous';
     const submittedAt = submission.submittedAt ? formatDate(submission.submittedAt) : 'Unknown date';
 
     card.innerHTML = `
@@ -74,7 +74,7 @@ function createSubmissionCard(submission) {
                 <span><span class="label">Submitted by:</span> ${escapeHtml(submitterName)}</span>
                 <span><span class="label">Date:</span> ${escapeHtml(submittedAt)}</span>
             </div>
-            <button type="button" class="btn-view" data-action="toggle-view">View Details</button>
+            <button type="button" class="btn-view" data-action="toggle-view"> <img src="logos/view.png" alt="View"> View Details</button>
         </div>
         <div class="submission-card-body">
             <h4>Description</h4>
@@ -92,8 +92,8 @@ function createSubmissionCard(submission) {
             ${renderSteps(submission.steps)}
         </div>
         <div class="submission-actions">
-            <button type="button" class="btn-approve" data-action="approve">Approve</button>
-            <button type="button" class="btn-reject" data-action="reject">Reject</button>
+            <button type="button" class="btn-approve" data-action="approve"> <img src="logos/approve.png" alt="Approve"> Approve</button>
+            <button type="button" class="btn-reject" data-action="reject"> <img src="logos/reject.png" alt="Reject"> Reject</button>
         </div>
     `;
 

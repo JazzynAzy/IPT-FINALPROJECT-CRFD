@@ -14,21 +14,39 @@
             <div class="aura-layer-2" aria-hidden="true"></div>
             <div class="aura-content">
                 <header class="header">
-                    <h1 id="header-tagline">Satisfy Your Pinoy Cravings</h1>
-                    <h3 id="header-subtagline">And Maybe Destroy Your Kitchen Too</h3>
-                    <p id="header-description">Share your favorite recipe with the community!</p>
+                    <div class="header-bg">
+                        <div class="tenor-gif-embed" data-postid="6573340784344677083" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+                            <a href="https://tenor.com/view/chef-cilantro-cook-cooking-eating-well-gif-6573340784344677083">Chef Cilantro GIF</a>from <a href="https://tenor.com/search/chef-gifs">Chef GIFs</a>
+                        </div>
+                        <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+                        <div class="header-overlay"></div>
+                    </div>
+                    <div class="header-content">
+                        <h1 id="header-tagline">Got a Recipe You Want to Share?</h1>
+                        <h3 id="header-subtagline">And Maybe Help Others Destroy Their Kitchens Too?</h3>
+                        <p id="header-description">Share your favorite recipe below!</p>
+                    </div>
                 </header>
                 <main>
                     <form id="recipe-form" class="recipe-form">
-                        <section class="form-section">
+                        <section class="form-section"> 
+
                             <h3>Basic Info</h3>
                             <div class="form-group">
-                                <label for="title">Title *</label>
-                                <input type="text" id="title" name="title" required placeholder="e.g., Chicken Adobo">
+                                <label for="author-name">Your Name</label>
+                                <input type="text" id="author-name" name="author-name" placeholder="Optional, it's up to you!">
+                                <span class="error-message" id="author-name-error" aria-live="polite"></span>
                             </div>
+
+                            <div class="form-group">
+                                <label for="title">Title <span class="required-asterisk">*</span></label>
+                                <input type="text" id="title" name="title" required placeholder="e.g., Chicken Adobo">
+                                <span class="error-message" id="title-error" aria-live="polite"></span>
+                            </div>
+
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="category">Category *</label>
+                                    <label for="category">Category <span class="required-asterisk">*</span></label>
                                     <select id="category" name="category" required>
                                         <option value="">Select category</option>
                                         <option value="Breakfast">Breakfast</option>
@@ -36,9 +54,11 @@
                                         <option value="Dinner">Dinner</option>
                                         <option value="Dessert">Dessert</option>
                                     </select>
+                                    <span class="error-message" id="category-error" aria-live="polite"></span>
                                 </div>
+                                
                                 <div class="form-group">
-                                    <label for="protein">Protein *</label>
+                                    <label for="protein">Protein <span class="required-asterisk">*</span></label>
                                     <select id="protein" name="protein" required>
                                         <option value="">Select protein</option>
                                         <option value="Chicken">Chicken</option>
@@ -47,11 +67,14 @@
                                         <option value="Beef">Beef</option>
                                         <option value="Other">Other</option>
                                     </select>
+                                    <span class="error-message" id="protein-error" aria-live="polite"></span>
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="description">Description *</label>
+                                <label for="description">Description <span class="required-asterisk">*</span></label>
                                 <textarea id="description" name="description" required rows="3" placeholder="Describe your recipe..."></textarea>
+                                <span class="error-message" id="description-error" aria-live="polite"></span>
                             </div>
                         </section>
 
@@ -59,43 +82,50 @@
                             <h3>Meta Fields</h3>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="servings">Servings *</label>
+                                    <label for="servings">Servings <span class="required-asterisk">*</span></label>
                                     <input type="number" id="servings" name="servings" required min="1" value="4">
+                                    <span class="error-message" id="servings-error" aria-live="polite"></span>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="prepDuration">Prep Duration *</label>
+                                    <label for="prepDuration">Prep Duration <span class="required-asterisk">*</span></label>
                                     <input type="text" id="prepDuration" name="prepDuration" required placeholder="e.g., 15 minutes">
+                                    <span class="error-message" id="prepDuration-error" aria-live="polite"></span>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="cookDuration">Cook Duration *</label>
+                                    <label for="cookDuration">Cook Duration <span class="required-asterisk">*</span></label>
                                     <input type="text" id="cookDuration" name="cookDuration" required placeholder="e.g., 45 minutes">
+                                    <span class="error-message" id="cookDuration-error" aria-live="polite"></span>
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="difficulty">Difficulty *</label>
+                                <label for="difficulty">Difficulty <span class="required-asterisk">*</span></label>
                                 <select id="difficulty" name="difficulty" required>
                                     <option value="">Select difficulty</option>
                                     <option value="Easy">Easy</option>
                                     <option value="Medium">Medium</option>
                                     <option value="Hard">Hard</option>
                                 </select>
+                                <span class="error-message" id="difficulty-error" aria-live="polite"></span>
                             </div>
                         </section>
 
                         <section class="form-section">
                             <h3>Ingredients</h3>
                             <div id="ingredients-list" class="dynamic-list"></div>
-                            <button type="button" id="add-ingredient" class="btn btn-secondary">Add Ingredient</button>
+                            <button type="button" id="add-ingredient" class="btn btn-secondary"> <img src="logos/add.png" alt="Add"> Add Ingredient</button>
                         </section>
 
                         <section class="form-section">
                             <h3>Steps</h3>
                             <div id="steps-list" class="dynamic-list"></div>
-                            <button type="button" id="add-step" class="btn btn-secondary">Add Step</button>
+                            <button type="button" id="add-step" class="btn btn-secondary"> <img src="logos/add.png" alt="Add"> Add Step</button>
                         </section>
 
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Submit Recipe</button>
+                            <button type="submit" class="btn btn-primary"> <img src="logos/submit.png" alt="Submit"> Submit Recipe</button>
                         </div>
                     </form>
 
@@ -106,7 +136,7 @@
                     <a href="homepage.html" class="nav-logo"> <img src="logos/CRFDLogo.png" alt="Logo"> </a>
                     <ul>
                         <li id="about"><a href="about.html">About</a></li>
-                        <li id="submit"><a href="submission.html">Submit Recipe</a></li>
+                        <li id="submit"><a href="submission.html">Submit A Recipe</a></li>
                         <li id="search"><a href="homepage.html#search"> <img src="logos/search.png" alt="Search"> </a></li>
                     </ul>
                 </nav>
