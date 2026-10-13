@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/README.md
 ﻿# IPT-FINALPROJECT-CRFD
-
-=======
-# IPT-FINALPROJECT-CRFD
 
 **Project Title:** Cooking Recipes (For Disaster) — CRFD  
 **Author:** Jessieca Mae D. Milan  
@@ -29,4 +25,4 @@ CRFD is a recipe content platform for browsing Filipino recipes and their variat
 | **Storage** | JSONBin.io (external JSON storage) |
 | **Authentication** | Cookie-based sessions (HttpOnly cookies) |
 | **Deployment** | Render + GitHub |
->>>>>>> 9917719a050c9d931b4591b46092eb95d42071db:README.md
+
