@@ -6,9 +6,6 @@ const recipes = require('./recipes.js');
 const cookieParser = require('cookie-parser');
 
 const { readSubmissions, writeSubmissions } = require('./jsonbin');
-const newRecipes = approved
-  .filter(s => s.submissionType !== 'variation')
-  .map(({ submissionType, parentRecipeId, authorName, submittedAt, approvedAt, status, ...rest }) => rest);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -78,6 +75,7 @@ app.post('/api/submissions', async (req, res) => {
     console.error('Failed to submit recipe:', err);
     res.status(500).json({ error: 'Failed to submit recipe. Please try again.' });
   }
+});
 
   // Admin: list pending
   app.get('/api/submissions', requireAdmin, async (req, res) => {
@@ -89,7 +87,7 @@ app.post('/api/submissions', async (req, res) => {
       res.status(500).json({ error: 'Failed to load pending submissions. Please try again.' });
     }
   });
-});
+
 
 // Admin: approve
 app.post('/api/submissions/:id/approve', requireAdmin, async (req, res) => {
@@ -145,7 +143,9 @@ app.get('/api/recipes', async (req, res) => {
     const approved = (await readSubmissions()).filter(s => s.status === 'approved');
 
     // Split into new recipes vs. variations
-    const newRecipes = approved.filter(s => s.submissionType !== 'variation');
+    const newRecipes = approved
+    .filter(s => s.submissionType !== 'variation')
+    .map(({ submissionType, parentRecipeId, authorName, submittedAt, approvedAt, status, ...rest }) => rest);
     const variations = approved.filter(s => s.submissionType === 'variation');
 
     // Merge each variation into its parent recipe
