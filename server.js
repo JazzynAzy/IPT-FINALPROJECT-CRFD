@@ -3,8 +3,9 @@ const cors = require('cors');
 const path = require('path');
 const recipes = require('./recipes.js');
 
-const fs = require('fs');
 const cookieParser = require('cookie-parser');
+
+const { readSubmissions, writeSubmissions } = require('./jsonbin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,28 +15,10 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// Where submissions live — uses Render's disk path if available
-const SUBMISSIONS_FILE = path.join(
-  process.env.RENDER_DISK_PATH || __dirname,
-  'submissions.json'
-);
-
-// Ensure the file exists on boot
-if (!fs.existsSync(SUBMISSIONS_FILE)) {
-  fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify([]));
-}
-
-function readSubmissions() {
-  return JSON.parse(fs.readFileSync(SUBMISSIONS_FILE, 'utf-8'));
-}
-
-function writeSubmissions(data) {
-  fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify(data, null, 2));
-}
 
 // Auth middleware
 function requireAdmin(req, res, next) {
-  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'; // Default for development
+  const adminPassword = process.env.ADMIN_PASSWORD || 'N40m1R35u';
   if (req.cookies.admin_token === adminPassword) {
     return next();
   }
@@ -43,8 +26,8 @@ function requireAdmin(req, res, next) {
 }
 
 // Public: submit a recipe
-app.post('/api/submissions', (req, res) => {
-  const submissions = readSubmissions();
+app.post('/api/submissions', async (req, res) => {
+  const submissions = await readSubmissions();
   const newSubmission = {
     id: `sub_${Date.now()}`,
     ...req.body,
@@ -52,32 +35,32 @@ app.post('/api/submissions', (req, res) => {
     submittedAt: new Date().toISOString()
   };
   submissions.push(newSubmission);
-  writeSubmissions(submissions);
+  await writeSubmissions(submissions);
   res.json({ ok: true, id: newSubmission.id });
 });
 
 // Admin: list pending
-app.get('/api/submissions', requireAdmin, (req, res) => {
-  const pending = readSubmissions().filter(s => s.status === 'pending');
+app.get('/api/submissions', requireAdmin, async (req, res) => {
+  const pending = (await readSubmissions()).filter(s => s.status === 'pending');
   res.json(pending);
 });
 
 // Admin: approve
-app.post('/api/submissions/:id/approve', requireAdmin, (req, res) => {
-  const submissions = readSubmissions();
+app.post('/api/submissions/:id/approve', requireAdmin, async (req, res) => {
+  const submissions = await readSubmissions();
   const sub = submissions.find(s => s.id === req.params.id);
   if (!sub) return res.status(404).json({ error: 'Not found' });
   sub.status = 'approved';
   sub.approvedAt = new Date().toISOString();
-  writeSubmissions(submissions);
+  await writeSubmissions(submissions);
   res.json({ ok: true });
 });
 
 // Admin: reject
-app.post('/api/submissions/:id/reject', requireAdmin, (req, res) => {
-  const submissions = readSubmissions();
+app.post('/api/submissions/:id/reject', requireAdmin, async (req, res) => {
+  const submissions = await readSubmissions();
   const filtered = submissions.filter(s => s.id !== req.params.id);
-  writeSubmissions(filtered);
+  await writeSubmissions(filtered);
   res.json({ ok: true });
 });
 
@@ -97,8 +80,8 @@ app.post('/api/admin/login', (req, res) => {
 });
 
 // API Routes
-app.get('/api/recipes', (req, res) => {
-  const approved = readSubmissions().filter(s => s.status === 'approved');
+app.get('/api/recipes', async (req, res) => {
+  const approved = (await readSubmissions()).filter(s => s.status === 'approved');
   res.json([...recipes, ...approved]);
 });
 
