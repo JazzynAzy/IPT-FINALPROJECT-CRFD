@@ -107,20 +107,36 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Render full recipe page
     function renderRecipe(recipe) {
-        container.innerHTML = `
-            <div class="recipe-header">
-                <h1>${recipe.name}</h1>
-                <p>${recipe.description}</p>
-            </div>
-
+        const videoBlock = recipe.youtubeId
+        ? `
             <div class="recipe-main-image">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/C1ZTHN1DH-s?si=T4SvNhNG7uOsi8i0&controls=0" 
-                title="YouTube video player" frameborder="0" allow="accelerometer; 
-                autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/${recipe.youtubeId}"
+                    title="${recipe.name} video"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
             </div>
+        `
+        : `
+            <div class="recipe-main-image">
+                <img src="${recipe.image}" alt="${recipe.name}">
+            </div>
+        `;
 
-            ${renderMeta(recipe)}
+    container.innerHTML = `
+        <div class="recipe-header">
+            <h1>${recipe.name}</h1>
+            <p>${recipe.description}</p>
+        </div>
+
+        ${videoBlock}
+
+        ${renderMeta(recipe)}
 
             <div class="tabs">
                 <div class="tab-header">

@@ -15,10 +15,7 @@
             <div class="aura-content">
                 <header class="header">
                     <div class="header-bg">
-                        <div class="tenor-gif-embed" data-postid="6573340784344677083" data-share-method="host" data-aspect-ratio="1" data-width="100%">
-                            <a href="https://tenor.com/view/chef-cilantro-cook-cooking-eating-well-gif-6573340784344677083">Chef Cilantro GIF</a>from <a href="https://tenor.com/search/chef-gifs">Chef GIFs</a>
-                        </div>
-                        <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+                        <img src="images/header-img.jpg" alt="Recipe header background" class="header-image">
                         <div class="header-overlay"></div>
                     </div>
                     <div class="header-content">
@@ -30,6 +27,25 @@
                 <main>
                     <form id="recipe-form" class="recipe-form">
                         <section class="form-section"> 
+
+                            <h3>Submission Type</h3>
+                            <div class="form-group">
+                                <label for="submission-type">What are you submitting? <span class="required-asterisk">*</span></label>
+                                <select id="submission-type" name="submission-type" required>
+                                    <option value="">Select submission type</option>
+                                    <option value="new">New Recipe</option>
+                                    <option value="variation">Variation of Existing Recipe</option>
+                                </select>
+                                <span class="error-message" id="submission-type-error" aria-live="polite"></span>
+                            </div>
+
+                            <div id="variation-recipe-select" class="form-group" style="display: none;">
+                                <label for="parent-recipe">Select Existing Recipe <span class="required-asterisk">*</span></label>
+                                <select id="parent-recipe" name="parent-recipe">
+                                    <option value="">Select a recipe...</option>
+                                </select>
+                                <span class="error-message" id="parent-recipe-error" aria-live="polite"></span>
+                            </div>
 
                             <h3>Basic Info</h3>
                             <div class="form-group">
@@ -76,6 +92,13 @@
                                 <textarea id="description" name="description" required rows="3" placeholder="Describe your recipe..."></textarea>
                                 <span class="error-message" id="description-error" aria-live="polite"></span>
                             </div>
+
+                            <div class="form-group">
+                                <label for="youtube-url">YouTube Video URL (Optional)</label>
+                                <input type="url" id="youtube-url" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                                <span class="error-message" id="youtube-url-error" aria-live="polite"></span>
+                                <small class="form-hint">Paste a YouTube link (e.g., youtube.com/watch?v=XtFu4wUN2Ok or youtu.be/XtFu4wUN2Ok)</small>
+                            </div>
                         </section>
 
                         <section class="form-section">
@@ -115,17 +138,17 @@
                         <section class="form-section">
                             <h3>Ingredients</h3>
                             <div id="ingredients-list" class="dynamic-list"></div>
-                            <button type="button" id="add-ingredient" class="btn btn-secondary"> <img src="logos/add.png" alt="Add"> Add Ingredient</button>
+                            <button type="button" id="add-ingredient" class="btn btn-secondary"> <img src="logos/add.png" alt="Add"></button>
                         </section>
 
                         <section class="form-section">
                             <h3>Steps</h3>
                             <div id="steps-list" class="dynamic-list"></div>
-                            <button type="button" id="add-step" class="btn btn-secondary"> <img src="logos/add.png" alt="Add"> Add Step</button>
+                            <button type="button" id="add-step" class="btn btn-secondary"> <img src="logos/add.png" alt="Add"></button>
                         </section>
 
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary"> <img src="logos/submit.png" alt="Submit"> Submit Recipe</button>
+                            <button type="submit" class="btn btn-primary"> Submit Recipe </button>
                         </div>
                     </form>
 

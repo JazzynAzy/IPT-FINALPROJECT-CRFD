@@ -2,6 +2,7 @@ let ingredientCounter = 0;
 let stepCounter = 0;
 
 const requiredFields = [
+    { id: 'submission-type', message: 'Please select a submission type' },
     { id: 'title', message: 'Title is required' },
     { id: 'category', message: 'Please select a category' },
     { id: 'protein', message: 'Please select a protein' },
@@ -48,13 +49,17 @@ function validateRequiredFields() {
     return isValid;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     addIngredientRow();
     addStepRow();
+
+    await loadExistingRecipes();
 
     document.getElementById('add-ingredient').addEventListener('click', addIngredientRow);
     document.getElementById('add-step').addEventListener('click', addStepRow);
     document.getElementById('recipe-form').addEventListener('submit', handleSubmit);
+
+    document.getElementById('submission-type').addEventListener('change', handleSubmissionTypeChange);
 
     requiredFields.forEach(field => {
         const input = document.getElementById(field.id);
@@ -75,7 +80,7 @@ function addIngredientRow(data = {}) {
         <input type="text" name="ingredient-name" placeholder="Ingredient name" value="${escapeHtml(data.name || '')}" required>
         <input type="text" name="ingredient-quantity" placeholder="Quantity" value="${escapeHtml(data.quantity || '')}" required>
         <input type="text" name="ingredient-unit" placeholder="Unit (e.g., cups, tbsp, grams)" value="${escapeHtml(data.unit || '')}" required>
-        <button type="button" class="btn-remove" aria-label="Remove ingredient">Remove</button>
+        <button type="button" class="btn-remove" aria-label="Remove ingredient"> <img src="logos/remove.png" alt="Remove"> </button>
     `;
     row.querySelector('.btn-remove').addEventListener('click', () => row.remove());
     container.appendChild(row);
@@ -89,7 +94,7 @@ function addStepRow(data = {}) {
     row.dataset.id = stepCounter;
     row.innerHTML = `
         <textarea name="step-text" placeholder="Step ${stepCounter}" rows="2" required>${escapeHtml(data.text || '')}</textarea>
-        <button type="button" class="btn-remove" aria-label="Remove step"> <img src="logos/remove.png" alt="Remove"> Remove</button>
+        <button type="button" class="btn-remove" aria-label="Remove step"> <img src="logos/remove.png" alt="Remove"> </button>
     `;
     row.querySelector('.btn-remove').addEventListener('click', () => row.remove());
     container.appendChild(row);
@@ -99,6 +104,58 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+function extractYouTubeId(url) {
+    if (!url) return null;
+    const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+        /youtube\.com\/watch\?.*v=([^&\n?#]+)/
+    ];
+    for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match) return match[1];
+    }
+    return null;
+}
+
+async function loadExistingRecipes() {
+    try {
+        const response = await fetch('/api/recipes');
+        const recipes = await response.json();
+        
+        const select = document.getElementById('parent-recipe');
+        recipes.forEach(recipe => {
+            const option = document.createElement('option');
+            option.value = recipe.id;
+            option.textContent = recipe.name;
+            select.appendChild(option);
+        });
+    } catch (err) {
+        console.error('Failed to load recipes:', err);
+    }
+}
+
+function handleSubmissionTypeChange(event) {
+    const variationSelect = document.getElementById('variation-recipe-select');
+    const parentRecipeSelect = document.getElementById('parent-recipe');
+    
+    if (event.target.value === 'variation') {
+        variationSelect.style.display = 'block';
+        parentRecipeSelect.required = true;
+        // Add parent-recipe to required fields dynamically
+        if (!requiredFields.some(f => f.id === 'parent-recipe')) {
+            requiredFields.push({ id: 'parent-recipe', message: 'Please select an existing recipe' });
+        }
+    } else {
+        variationSelect.style.display = 'none';
+        parentRecipeSelect.required = false;
+        parentRecipeSelect.value = '';
+        clearFieldError('parent-recipe');
+        // Remove parent-recipe from required fields
+        const idx = requiredFields.findIndex(f => f.id === 'parent-recipe');
+        if (idx !== -1) requiredFields.splice(idx, 1);
+    }
 }
 
 async function handleSubmit(event) {
@@ -153,6 +210,17 @@ async function handleSubmit(event) {
     }
 
     const authorName = form['author-name'].value.trim() || 'Anonymous';
+    const submissionType = form['submission-type'].value;
+    const parentRecipeId = form['parent-recipe'].value;
+    const youtubeUrl = form['youtube-url'].value.trim();
+    const youtubeId = extractYouTubeId(youtubeUrl);
+
+    if (youtubeUrl && !youtubeId) {
+        showMessage('Invalid YouTube URL. Please check the link.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Recipe';
+        return;
+    }
 
     const formData = {
         name: form.title.value.trim(),
@@ -166,7 +234,10 @@ async function handleSubmit(event) {
         difficulty: form.difficulty.value,
         ingredients,
         steps,
-        variations: []
+        variations: [],
+        submissionType: submissionType,
+        parentRecipeId: submissionType === 'variation' ? parentRecipeId : null,
+        youtubeId: youtubeId
     };
 
     try {
