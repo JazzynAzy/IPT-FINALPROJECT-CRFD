@@ -35,7 +35,8 @@ function writeSubmissions(data) {
 
 // Auth middleware
 function requireAdmin(req, res, next) {
-  if (req.cookies.admin_token === process.env.ADMIN_PASSWORD) {
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'; // Default for development
+  if (req.cookies.admin_token === adminPassword) {
     return next();
   }
   return res.status(401).json({ error: 'Unauthorized' });
@@ -83,8 +84,9 @@ app.post('/api/submissions/:id/reject', requireAdmin, (req, res) => {
 // Admin: login
 app.post('/api/admin/login', (req, res) => {
   const { password } = req.body;
-  if (password === process.env.ADMIN_PASSWORD) {
-    res.cookie('admin_token', password, {
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'; // Default for development
+  if (password === adminPassword) {
+    res.cookie('admin_token', adminPassword, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
@@ -94,15 +96,10 @@ app.post('/api/admin/login', (req, res) => {
   res.status(401).json({ error: 'Wrong password' });
 });
 
-// Update /api/recipes to include approved submissions
+// API Routes
 app.get('/api/recipes', (req, res) => {
   const approved = readSubmissions().filter(s => s.status === 'approved');
   res.json([...recipes, ...approved]);
-});
-
-// API Routes
-app.get('/api/recipes', (req, res) => {
-    res.json(recipes);
 });
 
 app.get('/api/recipes/:id', (req, res) => {

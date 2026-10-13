@@ -1,0 +1,28 @@
+[
+  {
+    "id": "sub_1791817310344",
+    "name": "Test Recipe",
+    "mealType": "Dinner",
+    "proteinType": "Chicken",
+    "description": "Test description",
+    "servings": 4,
+    "prepDuration": "15 minutes",
+    "cookDuration": "30 minutes",
+    "difficulty": "Easy",
+    "ingredients": [
+      {
+        "name": "Chicken",
+        "quantity": "2",
+        "unit": "pieces"
+      }
+    ],
+    "steps": [
+      "Cook chicken",
+      "Serve"
+    ],
+    "variations": [],
+    "status": "approved",
+    "submittedAt": "2026-10-12T15:01:50.346Z",
+    "approvedAt": "2026-10-12T15:03:35.037Z"
+  }
+]

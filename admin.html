@@ -5,7 +5,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cooking Recipes For Disaster</title>
+        <title>Admin Dashboard - Cooking Recipes For Disaster</title>
     </head>
 
     <body>
@@ -15,17 +15,24 @@
             <div class="aura-content">
                 
                 <main>
-                   <p>dashboard for admin to be added</p>
+                    <div class="admin-dashboard">
+                        <h2>Pending Submissions</h2>
+                        <div id="submissions-list">
+                            <div class="loading">Loading submissions...</div>
+                        </div>
+                    </div>
                 </main>
 
                 <nav class="nav">
                     <a href="homepage.html" class="nav-logo"> <img src="logos/CRFDLogo.png" alt="Logo"> </a>
                     <ul>
                         <li id="about"><a href="about.html">About</a></li>
-                        <li id="search"><a href="#search"> <img src="logos/search.png" alt="Search"> </a></li>
+                        <li id="search"><a href="homepage.html#search"> <img src="logos/search.png" alt="Search"> </a></li>
                     </ul>
                 </nav>
             </div>
         </div>
+
+        <script src="admin.js"></script>
     </body>
 </html>

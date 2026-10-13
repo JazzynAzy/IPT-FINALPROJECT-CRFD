@@ -16,25 +16,103 @@
                 <header class="header">
                     <h1 id="header-tagline">Satisfy Your Pinoy Cravings</h1>
                     <h3 id="header-subtagline">And Maybe Destroy Your Kitchen Too</h3>
-                    <p id="header-description">Search for recipes and find out the different ways you can cook them! 
-                        Be it your usual way of cooking, or a native recipe you didn't know you can do. </p>
+                    <p id="header-description">Share your favorite recipe with the community!</p>
                 </header>
                 <main>
-                    <h2>Want to Share Your Favorite Recipe?</h2>
-                    <p>submission form to be added...</p>
+                    <form id="recipe-form" class="recipe-form">
+                        <section class="form-section">
+                            <h3>Basic Info</h3>
+                            <div class="form-group">
+                                <label for="title">Title *</label>
+                                <input type="text" id="title" name="title" required placeholder="e.g., Chicken Adobo">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="category">Category *</label>
+                                    <select id="category" name="category" required>
+                                        <option value="">Select category</option>
+                                        <option value="Breakfast">Breakfast</option>
+                                        <option value="Lunch">Lunch</option>
+                                        <option value="Dinner">Dinner</option>
+                                        <option value="Dessert">Dessert</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="protein">Protein *</label>
+                                    <select id="protein" name="protein" required>
+                                        <option value="">Select protein</option>
+                                        <option value="Chicken">Chicken</option>
+                                        <option value="Pork">Pork</option>
+                                        <option value="Fish">Fish</option>
+                                        <option value="Beef">Beef</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description *</label>
+                                <textarea id="description" name="description" required rows="3" placeholder="Describe your recipe..."></textarea>
+                            </div>
+                        </section>
+
+                        <section class="form-section">
+                            <h3>Meta Fields</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="servings">Servings *</label>
+                                    <input type="number" id="servings" name="servings" required min="1" value="4">
+                                </div>
+                                <div class="form-group">
+                                    <label for="prepDuration">Prep Duration *</label>
+                                    <input type="text" id="prepDuration" name="prepDuration" required placeholder="e.g., 15 minutes">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cookDuration">Cook Duration *</label>
+                                    <input type="text" id="cookDuration" name="cookDuration" required placeholder="e.g., 45 minutes">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="difficulty">Difficulty *</label>
+                                <select id="difficulty" name="difficulty" required>
+                                    <option value="">Select difficulty</option>
+                                    <option value="Easy">Easy</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Hard">Hard</option>
+                                </select>
+                            </div>
+                        </section>
+
+                        <section class="form-section">
+                            <h3>Ingredients</h3>
+                            <div id="ingredients-list" class="dynamic-list"></div>
+                            <button type="button" id="add-ingredient" class="btn btn-secondary">Add Ingredient</button>
+                        </section>
+
+                        <section class="form-section">
+                            <h3>Steps</h3>
+                            <div id="steps-list" class="dynamic-list"></div>
+                            <button type="button" id="add-step" class="btn btn-secondary">Add Step</button>
+                        </section>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Submit Recipe</button>
+                        </div>
+                    </form>
+
+                    <div id="form-message" class="form-message" aria-live="polite"></div>
                 </main>
 
                 <nav class="nav">
                     <a href="homepage.html" class="nav-logo"> <img src="logos/CRFDLogo.png" alt="Logo"> </a>
                     <ul>
                         <li id="about"><a href="about.html">About</a></li>
-                        <li id="search"><a href="#search"> <img src="logos/search.png" alt="Search"> </a></li>
+                        <li id="search"><a href="homepage.html#search"> <img src="logos/search.png" alt="Search"> </a></li>
+                        <li id="submit"><a href="submission.html">Submit Recipe</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
 
-        <script src="recipes.js"></script>
-        <script src="homepage.js"></script>
+        <script src="submission.js"></script>
     </body>
 </html>

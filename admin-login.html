@@ -5,7 +5,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cooking Recipes For Disaster</title>
+        <title>Admin Login - Cooking Recipes For Disaster</title>
     </head>
 
     <body>
@@ -15,17 +15,68 @@
             <div class="aura-content">
                 
                 <main>
-                   <p>login for admin to be added</p>
+                    <form id="admin-login-form" class="admin-login-form">
+                        <h2>Admin Login</h2>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required placeholder="Enter admin password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                        <div id="login-message" class="form-message" aria-live="polite"></div>
+                    </form>
                 </main>
 
                 <nav class="nav">
                     <a href="homepage.html" class="nav-logo"> <img src="logos/CRFDLogo.png" alt="Logo"> </a>
                     <ul>
                         <li id="about"><a href="about.html">About</a></li>
-                        <li id="search"><a href="#search"> <img src="logos/search.png" alt="Search"> </a></li>
+                        <li id="search"><a href="homepage.html#search"> <img src="logos/search.png" alt="Search"> </a></li>
                     </ul>
                 </nav>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const form = document.getElementById('admin-login-form');
+                const messageDiv = document.getElementById('login-message');
+                const submitBtn = form.querySelector('button[type="submit"]');
+
+                form.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+
+                    messageDiv.textContent = '';
+                    messageDiv.className = 'form-message';
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Logging in...';
+
+                    const password = document.getElementById('password').value;
+
+                    try {
+                        const response = await fetch('/api/admin/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ password })
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok && result.ok) {
+                            window.location.href = 'admin.html';
+                        } else {
+                            messageDiv.textContent = result.error || 'Wrong password. Please try again.';
+                            messageDiv.className = 'form-message error';
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        messageDiv.textContent = 'Network error. Please try again.';
+                        messageDiv.className = 'form-message error';
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Login';
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
