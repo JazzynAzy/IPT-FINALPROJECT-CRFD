@@ -139,22 +139,36 @@ async function loadExistingRecipes() {
 function handleSubmissionTypeChange(event) {
     const variationSelect = document.getElementById('variation-recipe-select');
     const parentRecipeSelect = document.getElementById('parent-recipe');
-    
+    const variationLabelInput = document.getElementById('variation-label');
+    const titleInput = document.getElementById('title');
+
     const fieldsToDisableForVariation = ['title', 'category', 'protein', 'youtube-url', 'servings', 'prepDuration', 'cookDuration', 'difficulty'];
     
     if (event.target.value === 'variation') {
         variationSelect.style.display = 'block';
         parentRecipeSelect.required = true;
+        variationLabelInput.required = true;
+        titleInput.disabled = true;
+        titleInput.removeAttribute('required');  // ← REMOVE required attribute
+        titleInput.value = '';
+
         // Add parent-recipe to required fields dynamically
         if (!requiredFields.some(f => f.id === 'parent-recipe')) {
             requiredFields.push({ id: 'parent-recipe', message: 'Please select an existing recipe' });
         }
+        if (!requiredFields.some(f => f.id === 'variation-label')) {
+            requiredFields.push({ id: 'variation-label', message: 'Variation label is required' });
+        }
+        
+        const titleIdx = requiredFields.findIndex(f => f.id === 'title');
+        if (titleIdx !== -1) requiredFields.splice(titleIdx, 1);
         
         // Disable fields that are not needed for variations
         fieldsToDisableForVariation.forEach(fieldId => {
             const el = document.getElementById(fieldId);
             if (el) {
                 el.disabled = true;
+                el.removeAttribute('required');  // ← REMOVE required attribute
                 el.value = '';
                 clearFieldError(fieldId);
             }
@@ -166,7 +180,54 @@ function handleSubmissionTypeChange(event) {
         variationSelect.style.display = 'none';
         parentRecipeSelect.required = false;
         parentRecipeSelect.value = '';
+        variationLabelInput.required = false;
+        variationLabelInput.value = '';
+        titleInput.disabled = false;
+        titleInput.setAttribute('required', '');  // ← RESTORE required attribute
         clearFieldError('parent-recipe');
+        clearFieldError('variation-label');
+
+        //remove variation-specific required fields
+        ['parent-recipe', 'variation-label'].forEach(fieldId => {
+            const idx = requiredFields.findIndex(f => f.id === fieldId);
+            if (idx !== -1) requiredFields.splice(idx, 1);
+        });
+
+        //restore title to required
+        if (!requiredFields.some(f => f.id === 'title')) {
+            requiredFields.push({ id: 'title', message: 'Title is required' });
+        }
+
+        // Re-enable and restore required fields for new recipe
+        fieldsToDisableForVariation.forEach(fieldId => {
+            const el = document.getElementById(fieldId);
+            if (el) {
+                el.disabled = false;
+                el.setAttribute('required', '');  // ← RESTORE required attribute
+            }
+        });
+
+        //restore required fields for new recipe
+        if (!requiredFields.some(f => f.id === 'category')) {
+            requiredFields.push({ id: 'category', message: 'Please select a category' });
+        }
+        if (!requiredFields.some(f => f.id === 'protein')) {
+            requiredFields.push({ id: 'protein', message: 'Please select a protein' });
+        }
+        if (!requiredFields.some(f => f.id === 'servings')) {
+            requiredFields.push({ id: 'servings', message: 'Servings is required' });
+        }
+        if (!requiredFields.some(f => f.id === 'prepDuration')) {
+            requiredFields.push({ id: 'prepDuration', message: 'Prep duration is required' });
+        }
+        if (!requiredFields.some(f => f.id === 'cookDuration')) {
+            requiredFields.push({ id: 'cookDuration', message: 'Cook duration is required' });
+        }
+        if (!requiredFields.some(f => f.id === 'difficulty')) {
+            requiredFields.push({ id: 'difficulty', message: 'Please select a difficulty' });
+        }
+    }
+
         // Remove parent-recipe from required fields
         const idx = requiredFields.findIndex(f => f.id === 'parent-recipe');
         if (idx !== -1) requiredFields.splice(idx, 1);
@@ -176,6 +237,7 @@ function handleSubmissionTypeChange(event) {
             const el = document.getElementById(fieldId);
             if (el) {
                 el.disabled = false;
+                el.setAttribute('required', '');  // ← RESTORE required attribute
             }
         });
         
@@ -254,6 +316,9 @@ async function handleSubmit(event) {
 
     const authorName = form['author-name'].value.trim() || 'Anonymous';
     const submissionType = form['submission-type'].value;
+
+    const nameValue = submissionType === 'variation' ? form['variation-label'].value.trim() : form.title.value.trim();
+
     const parentRecipeId = form['parent-recipe'].value;
     const youtubeUrl = form['youtube-url'].value.trim();
     const youtubeId = extractYouTubeId(youtubeUrl);
@@ -266,7 +331,7 @@ async function handleSubmit(event) {
     }
 
     const formData = {
-        name: form.title.value.trim(),
+        name: nameValue,
         authorName: authorName,
         mealType: form.category.value,
         proteinType: form.protein.value,
