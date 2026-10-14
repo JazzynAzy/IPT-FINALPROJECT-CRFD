@@ -68,9 +68,23 @@ app.post('/api/submissions', async (req, res) => {
     const body = req.body;
 
     // Required fields
-    if (!body.name || !body.mealType || !body.proteinType || !body.description) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (!body.name || !body.description) {
+      return res.status(400).json({
+        error: 'Missing required fields',
+        received: { name: body.name, description: body.description, submissionType: body.submissionType }
+      });
     }
+
+    if (body.submissionType !== 'variation') {
+      if (!body.mealType || !body.proteinType) {
+        return res.status(400).json({
+          error: 'Missing required fields',
+          received: { mealType: body.mealType, proteinType: body.proteinType }
+        });
+      }
+    }
+
+
     if (!Array.isArray(body.ingredients) || body.ingredients.length === 0) {
       return res.status(400).json({ error: 'At least one ingredient is required' });
     }

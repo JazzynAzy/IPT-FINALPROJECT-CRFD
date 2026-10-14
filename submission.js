@@ -39,10 +39,12 @@ function validateRequiredFields() {
     let isValid = true;
     requiredFields.forEach(field => {
         const input = document.getElementById(field.id);
-        if (input && !input.value.trim()) {
+        if (!input) return;
+        if (input.disabled) return; // Skip disabled fields
+        if (!input.value.trim()) {
             showFieldError(field.id, field.message);
             isValid = false;
-        } else if (input) {
+        } else {
             clearFieldError(field.id);
         }
     });
@@ -297,21 +299,23 @@ async function handleSubmit(event) {
         return;
     }
 
+    const isVariation = submissionType === 'variation';
+
     const formData = {
         name: nameValue,
         authorName: authorName,
-        mealType: form.category.value,
-        proteinType: form.protein.value,
+        mealType: isVariation ? null : form.category.value,
+        proteinType: isVariation ? null : form.protein.value,
         description: form.description.value.trim(),
-        servings: parseInt(form.servings.value, 10),
-        prepDuration: form.prepDuration.value.trim(),
-        cookDuration: form.cookDuration.value.trim(),
-        difficulty: form.difficulty.value,
+        servings: isVariation ? null : parseInt(form.servings.value, 10),
+        prepDuration: isVariation ? null : form.prepDuration.value.trim(),
+        cookDuration: isVariation ? null : form.cookDuration.value.trim(),
+        difficulty: isVariation ? null : form.difficulty.value,
         ingredients,
         steps,
         variations: [],
         submissionType: submissionType,
-        parentRecipeId: submissionType === 'variation' ? parentRecipeId : null,
+        parentRecipeId: isVariation ? parentRecipeId : null,
         youtubeId: youtubeId
     };
 
