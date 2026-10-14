@@ -227,41 +227,8 @@ function handleSubmissionTypeChange(event) {
             requiredFields.push({ id: 'difficulty', message: 'Please select a difficulty' });
         }
     }
-
-        // Remove parent-recipe from required fields
-        const idx = requiredFields.findIndex(f => f.id === 'parent-recipe');
-        if (idx !== -1) requiredFields.splice(idx, 1);
-        
-        // Re-enable and restore required fields for new recipe
-        fieldsToDisableForVariation.forEach(fieldId => {
-            const el = document.getElementById(fieldId);
-            if (el) {
-                el.disabled = false;
-                el.setAttribute('required', '');  // ← RESTORE required attribute
-            }
-        });
-        
-        // Restore required fields
-        if (!requiredFields.some(f => f.id === 'category')) {
-            requiredFields.push({ id: 'category', message: 'Please select a category' });
-        }
-        if (!requiredFields.some(f => f.id === 'protein')) {
-            requiredFields.push({ id: 'protein', message: 'Please select a protein' });
-        }
-        if (!requiredFields.some(f => f.id === 'servings')) {
-            requiredFields.push({ id: 'servings', message: 'Servings is required' });
-        }
-        if (!requiredFields.some(f => f.id === 'prepDuration')) {
-            requiredFields.push({ id: 'prepDuration', message: 'Prep duration is required' });
-        }
-        if (!requiredFields.some(f => f.id === 'cookDuration')) {
-            requiredFields.push({ id: 'cookDuration', message: 'Cook duration is required' });
-        }
-        if (!requiredFields.some(f => f.id === 'difficulty')) {
-            requiredFields.push({ id: 'difficulty', message: 'Please select a difficulty' });
-        }
-    }
 }
+
 
 async function handleSubmit(event) {
     event.preventDefault();
