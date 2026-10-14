@@ -1,6 +1,7 @@
 <!DOCTYPE html>
     <html lang="en">
     <head>
+        <link rel="stylesheet" href="fontawesome/css/all.min.css">
         <link rel="stylesheet" href="styles.css">
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <meta charset="UTF-8">
@@ -26,17 +27,53 @@
                     </form>
                 </main>
 
-                <nav class="nav">
-                    <a href="homepage.html" class="nav-logo"> <img src="logos/CRFDLogo.png" alt="Logo"> </a>
-                    <ul>
-                        <li id="about"><a href="about.html">About</a></li>
-                        <li id="search"><a href="homepage.html#search"> <img src="logos/search.png" alt="Search"> </a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
+                <div class="parallax-divider" style="background-image: url('images/lumpiang_shanghai.jpg');">
+                    <div class="parallax-content">
+                        <h3>Admin Access</h3>
+                        <p>Review and approve community-submitted recipes.</p>
+                    </div>
+                </div>
 
-        <script>
+                <footer class="footer">
+                    <div class="footer-top">
+                        <div class="footer-column">
+                            <h3>Quick Links</h3>
+                            <ul class="footer-links">
+                                <li><a href="homepage.html">Home</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="submission.html">Submit Recipe</a></li>
+                                <li><a href="homepage.html#search">Search</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h3>Our Pages</h3>
+                            <ul class="footer-links">
+                                <li><a href="homepage.html">Recipe Catalog</a></li>
+                                <li><a href="about.html">How It Works</a></li>
+                                <li><a href="submission.html">Share Your Recipe</a></li>
+                                <li><a href="admin.html">Admin Dashboard</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="copyright">
+                        <p>&copy; 2024 Cooking Recipes For Disaster - Made by Jessieca Mae D. Milan, Designed with inspiration from <a href="https://templatemo.com" rel="nofollow" target="_blank">TemplateMo</a></p>
+                    </div>
+                </footer>
+
+                <div class="corner-decoration top-left"><i class="fas fa-lock"></i></div>
+                <div class="corner-decoration bottom-right"><i class="fas fa-pagelines"></i></div>
+
+                 <nav class="nav">
+                     <a href="homepage.html" class="nav-logo"> <img src="logos/CRFDLogo.png" alt="Logo"> </a>
+                     <ul>
+                         <li id="about"><a href="about.html">About</a></li>
+                         <li id="search"><a href="homepage.html#search"> <img src="logos/search.png" alt="Search"> </a></li>
+                     </ul>
+                 </nav>
+             </div>
+         </div>
+
+         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const form = document.getElementById('admin-login-form');
                 const messageDiv = document.getElementById('login-message');

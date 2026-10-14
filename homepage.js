@@ -87,9 +87,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         recipesContainer.innerHTML = filtered.map(r => `
-            <a href="recipe.html?id=${r.id}">
+            <a href="recipe.html?id=${r.id}" class="recipe-card-link">
                 <div class="recipe-card">
-                    <img src="${r.image}" alt="${r.name}">
+                    <div class="recipe-image-wrapper">
+                        <img src="${r.image}" alt="${r.name}">
+                        <div class="recipe-overlay">
+                            <i class="fas fa-play recipe-overlay-icon"></i>
+                        </div>
+                    </div>
                     <h3>${r.name}</h3>
                 </div>
             </a>

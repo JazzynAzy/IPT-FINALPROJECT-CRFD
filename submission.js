@@ -140,7 +140,7 @@ function handleSubmissionTypeChange(event) {
     const variationSelect = document.getElementById('variation-recipe-select');
     const parentRecipeSelect = document.getElementById('parent-recipe');
     
-    const fieldsToDisableForVariation = ['category', 'protein', 'youtube-url', 'servings', 'prepDuration', 'cookDuration', 'difficulty'];
+    const fieldsToDisableForVariation = ['title', 'category', 'protein', 'youtube-url', 'servings', 'prepDuration', 'cookDuration', 'difficulty'];
     
     if (event.target.value === 'variation') {
         variationSelect.style.display = 'block';

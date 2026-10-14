@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="fontawesome/css/all.min.css">
         <link rel="stylesheet" href="styles.css">
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <meta charset="UTF-8">
@@ -13,10 +14,16 @@
             <div class="aura-layer-2" aria-hidden="true"></div>
             <div class="aura-content">
                 <header class="header">
-                    <h1 id="header-tagline">Satisfy Your Pinoy Cravings</h1>
+                    <div class="header-bg">
+                        <img src="images/header-img.jpg" alt="Recipe header background" class="header-image">
+                        <div class="header-overlay"></div>
+                    </div>
+                    <div class="header-content">
+                        <h1 id="header-tagline">Satisfy Your Pinoy Cravings</h1>
                     <h3 id="header-subtagline">And Maybe Destroy Your Kitchen Too</h3>
                     <p id="header-description">Search for recipes and find out the different ways you can cook them! 
                         Be it your usual way of cooking, or a native recipe you didn't know you can do. </p>
+                    </div>
                 </header>
                 
                 <div class="info">
@@ -26,33 +33,38 @@
                         Here's how to make the most of the site:</p>
 
                     <div class="features">
-                        <div class="feature">
+                        <div class="feature browse-icon">
+                            <i class="fas fa-utensils fa-3x tm-about-icon mb-3"></i>
                             <h3>1. Browse Recipes</h3>
                             <p>On the <a href="homepage.html">homepage</a>, you'll find recipe cards. 
                                 Use the filter bar to narrow down by meal type (Breakfast, Lunch, Dinner, Dessert) 
                                 and protein type (Chicken, Pork, Fish, Beef, Other), 
                                 or search for a specific dish.</p>
                         </div>
-                        <div class="feature">
+                        <div class="feature explore-icon">
+                            <i class="fas fa-book fa-3x tm-about-icon mb-3"></i>
                             <h3>2. Explore the Recipe Page</h3>
                             <p>Each recipe page has two tabs: 
                                 the main <strong>Recipe</strong> tab with ingredients and step-by-step instructions, 
                                 and a <strong>Variations</strong> tab offering alternative cooking methods or ingredient twists. 
                                 Within the Variations tab, use the sub-tabs to switch between each variation.</p>
                         </div>
-                        <div class="feature">
+                        <div class="feature variations-icon">
+                            <i class="fas fa-pepper-hot fa-3x tm-about-icon mb-3"></i>
                             <h3>3. Try the Variations</h3>
                             <p>Every recipe includes some type of variation, whether that's a different cooking method (e.g., grilled instead of fried), 
                                 an added ingredient (Ginataang Tinola with coconut milk), 
                                 or a substitution (e.g., using Pechay instead of Kangkong in Sinigang na Baboy). 
                                 These are designed to help you adapt dishes to your taste or dietary needs.</p>
                         </div>
-                        <div class="feature">
+                        <div class="feature search-icon">
+                            <i class="fas fa-search fa-3x tm-about-icon mb-3"></i>
                             <h3>4. Search Functionality</h3>
                             <p>Use the search bar at the top of any page to find recipes by name. 
                                 The search works in combination with category filters for precise results.</p>
                         </div>
-                        <div class="feature">
+                        <div class="feature submit-icon">
+                            <i class="fas fa-share-alt fa-3x tm-about-icon mb-3"></i>
                             <h3>5. Submit Your Own Recipes</h3>
                             <p>Have a favorite recipe you'd like to share? 
                                 Use the "Submit Recipe" link in the navigation to upload your creation. 
@@ -60,6 +72,41 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="parallax-divider" style="background-image: url('images/pandesal.jpg');">
+                    <div class="parallax-content">
+                        <h3>Our Story</h3>
+                        <p>Born from a passion for Filipino cuisine and a love for culinary experimentation.</p>
+                    </div>
+                </div>
+                <footer class="footer">
+                    <div class="footer-top">
+                        <div class="footer-column">
+                            <h3>Quick Links</h3>
+                            <ul class="footer-links">
+                                <li><a href="homepage.html">Home</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="submission.html">Submit Recipe</a></li>
+                                <li><a href="homepage.html#search">Search</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h3>Our Pages</h3>
+                            <ul class="footer-links">
+                                <li><a href="homepage.html">Recipe Catalog</a></li>
+                                <li><a href="about.html">How It Works</a></li>
+                                <li><a href="submission.html">Share Your Recipe</a></li>
+                                <li><a href="admin.html">Admin Dashboard</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="copyright">
+                        <p>&copy; 2024 Cooking Recipes For Disaster - Designed with inspiration from <a href="https://templatemo.com" rel="nofollow" target="_blank">TemplateMo</a></p>
+                    </div>
+                </footer>
+
+                <div class="corner-decoration top-left"><i class="fas fa-utensils"></i></div>
+                <div class="corner-decoration bottom-right"><i class="fas fa-pagelines"></i></div>
 
                 <nav class="nav">
                     <a href="homepage.html" class="nav-logo"> <img src="logos/CRFDLogo.png" alt="Logo"> </a>
