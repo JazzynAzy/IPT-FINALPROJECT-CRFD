@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
 
 
 // Auth middleware
@@ -24,10 +23,44 @@ function requireAdmin(req, res, next) {
     return res.status(500).json({ error: 'Server misconfigured' });
   }
   if (req.cookies.admin_token === adminPassword) {
+    // Reset cookie for sliding expiration (5 minutes)
+    res.cookie('admin_token', adminPassword, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 5 // 5 minutes
+    });
     return next();
   }
   return res.status(401).json({ error: 'Unauthorized' });
 }
+
+// Auth middleware for HTML admin pages
+function requireAdminHtml(req, res, next) {
+  // Only protect admin.html
+  if (req.path === '/admin.html' || req.path === 'admin.html') {
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminPassword) {
+      console.error('ADMIN_PASSWORD env var is not set!');
+      return res.status(500).json({ error: 'Server misconfigured' });
+    }
+    if (req.cookies.admin_token === adminPassword) {
+      // Reset cookie for sliding expiration (5 minutes)
+      res.cookie('admin_token', adminPassword, {
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 5 // 5 minutes
+      });
+      return next();
+    }
+    // Not authenticated, redirect to login
+    return res.redirect('/admin-login.html');
+  }
+  next();
+}
+ 
+app.use(requireAdminHtml);
+
+app.use(express.static(path.join(__dirname)));
 
 // Public: submit a recipe
 app.post('/api/submissions', async (req, res) => {
@@ -130,11 +163,21 @@ app.post('/api/admin/login', (req, res) => {
     res.cookie('admin_token', adminPassword, {
       httpOnly: true,
       sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+      maxAge: 1000 * 60 * 5 // 5 minutes
     });
     return res.json({ ok: true });
   }
   res.status(401).json({ error: 'Wrong password' });
+});
+ 
+// Admin: logout
+app.get('/admin/logout', (req, res) => {
+  res.clearCookie('admin_token', {
+    httpOnly: true,
+    sameSite: 'lax',
+    path: '/'
+  });
+  res.redirect('/admin-login.html');
 });
 
 // API Routes

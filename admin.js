@@ -74,7 +74,7 @@ function createSubmissionCard(submission) {
                 <span><span class="label">Submitted by:</span> ${escapeHtml(submitterName)}</span>
                 <span><span class="label">Date:</span> ${escapeHtml(submittedAt)}</span>
             </div>
-            <button type="button" class="btn-view" data-action="toggle-view"> <img src="logos/view.png" alt="View"> View Details</button>
+            <button type="button" class="btn-view" data-action="toggle-view"> <img src="logos/view.png" alt="View"></button>
         </div>
         <div class="submission-card-body">
             <h4>Description</h4>
@@ -101,7 +101,7 @@ function createSubmissionCard(submission) {
         const body = card.querySelector('.submission-card-body');
         const btn = e.target;
         body.classList.toggle('expanded');
-        btn.textContent = body.classList.contains('expanded') ? 'Hide Details' : 'View Details';
+        btn.innerHTML = body.classList.contains('expanded') ? '<img src="logos/hide.png" alt="Hide">' : '<img src="logos/view.png" alt="View">';
     });
 
     card.querySelector('[data-action="approve"]').addEventListener('click', () => handleAction(submission.id, 'approve'));
